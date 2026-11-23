@@ -14,7 +14,7 @@ logging.basicConfig(level=os.getenv("LOG_LEVEL","INFO"))
 log = logging.getLogger("shorts-agent")
 BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 ADMIN_ID = int(os.environ["TELEGRAM_ADMIN_CHAT_ID"])
-DATA = Path(os.getenv("DATA_DIR","/var/data"))
+DATA = Path(os.getenv("DATA_DIR","./data")).expanduser().resolve()
 VIDEO, MUSIC, OUTPUT = DATA/"videos", DATA/"music", DATA/"output"
 DB = DATA/"agent.sqlite3"
 for p in (DATA, VIDEO, MUSIC, OUTPUT): p.mkdir(parents=True, exist_ok=True)
@@ -44,7 +44,7 @@ async def denied(u):
     if u.effective_message: await u.effective_message.reply_text("⛔ Private bot: not authorized.")
 
 def ai_generate(idea):
-    if not OPENAI_KEY: raise RuntimeError("OPENAI_API_KEY is missing in Render environment.")
+    if not OPENAI_KEY: raise RuntimeError("OPENAI_API_KEY is missing. Add it to your local .env file.")
     client=OpenAI(api_key=OPENAI_KEY,timeout=60,max_retries=2)
     rsp=client.responses.create(
         model=MODEL,
@@ -154,7 +154,7 @@ async def pending(u,ctx):
 
 async def ideas(u,ctx):
     if not admin(u): return await denied(u)
-    if not YT_KEY: return await u.message.reply_text("Set YOUTUBE_API_KEY in Render to enable /ideas.")
+    if not YT_KEY: return await u.message.reply_text("Set YOUTUBE_API_KEY in your local .env file to enable /ideas.")
     import requests
     try:
         r=requests.get("https://www.googleapis.com/youtube/v3/videos",
