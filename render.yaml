@@ -1,0 +1,30 @@
+services:
+  - type: worker
+    name: shorts-telegram-agent
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    disk:
+      name: shorts-agent-data
+      mountPath: /var/data
+      sizeGB: 10
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_ADMIN_CHAT_ID
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: YOUTUBE_TOKEN_JSON
+        sync: false
+      - key: YOUTUBE_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-5.5
+      - key: DATA_DIR
+        value: /var/data
+      - key: YOUTUBE_PRIVACY
+        value: private
+      - key: TREND_REGION
+        value: IN
