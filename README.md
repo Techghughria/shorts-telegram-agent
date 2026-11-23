@@ -1,6 +1,6 @@
 # Shorts Telegram Agent — OpenAI content + music + YouTube approval
 
-Cloud Telegram worker. OpenAI generates original Shorts metadata, scripts, shot lists and music-generation prompts. The bot accepts a licensed or externally AI-generated audio file, renders a vertical preview, and waits for Telegram approval before uploading.
+Cloud Telegram worker. OpenAI generates original Shorts metadata, scripts, shot lists and music-generation prompts. The bot accepts user-supplied footage plus a licensed or externally AI-generated audio file, renders a vertical preview, and waits for Telegram approval before uploading. It does not generate video footage or music audio itself: OpenAI generates the script/metadata/music prompt, while audio is created in a separate music service and uploaded to the bot.
 
 ## Commands
 - /generate <idea>: title, description, tags, hook, voiceover, shot list and original music prompt.
