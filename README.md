@@ -17,7 +17,7 @@ OpenAI creates the music prompt, not the audio file. Use a separate music provid
 Run /generate <idea>, create the music track and send it with the music caption, then send an MP4. The bot uses the latest AI draft (or a custom video caption), mixes the latest registered track, renders 720x1280 portrait video, and sends a preview with Approve/Reject. Only Approve triggers YouTube upload. Default privacy is private.
 
 ## Render deployment
-Create a GitHub repository, then Render > New > Blueprint and connect this repo. The blueprint creates a Background Worker and persistent disk at /var/data. Configure TELEGRAM_BOT_TOKEN, TELEGRAM_ADMIN_CHAT_ID, OPENAI_API_KEY, YOUTUBE_TOKEN_JSON, and optional YOUTUBE_API_KEY. Never commit secrets.
+Open Render Dashboard → New → Blueprint and connect `Techghughria/shorts-telegram-agent`. Select the root `render.yaml`; it creates a Background Worker with persistent storage at `/var/data`. Set these secret environment variables in Render: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_ADMIN_CHAT_ID`, `OPENAI_API_KEY`, and `YOUTUBE_TOKEN_JSON`. `YOUTUBE_API_KEY` is optional and only used by `/ideas`. Keep secrets out of GitHub and never paste them into chat. After saving the variables, deploy the service and check its logs.
 
 ## OpenAI
 The model is configured by OPENAI_MODEL. The code uses the OpenAI Python SDK Responses API and expects JSON output. Set a model enabled for your API project. Keep the API key only in Render secrets.
