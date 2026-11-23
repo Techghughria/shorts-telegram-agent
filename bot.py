@@ -19,7 +19,7 @@ VIDEO, MUSIC, OUTPUT = DATA/"videos", DATA/"music", DATA/"output"
 DB = DATA/"agent.sqlite3"
 for p in (DATA, VIDEO, MUSIC, OUTPUT): p.mkdir(parents=True, exist_ok=True)
 OPENAI_KEY = os.getenv("OPENAI_API_KEY","")
-MODEL = os.getenv("OPENAI_MODEL","gpt-6.2-sol")
+MODEL = os.getenv("OPENAI_MODEL","gpt-6.1-sol")
 YT_TOKEN = os.getenv("YOUTUBE_TOKEN_JSON","")
 YT_KEY = os.getenv("YOUTUBE_API_KEY","")
 YT_PRIVACY = os.getenv("YOUTUBE_PRIVACY","private")
