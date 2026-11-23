@@ -19,10 +19,11 @@ VIDEO, MUSIC, OUTPUT = DATA/"videos", DATA/"music", DATA/"output"
 DB = DATA/"agent.sqlite3"
 for p in (DATA, VIDEO, MUSIC, OUTPUT): p.mkdir(parents=True, exist_ok=True)
 OPENAI_KEY = os.getenv("OPENAI_API_KEY","")
-MODEL = os.getenv("OPENAI_MODEL","gpt-6.1-sol")
+MODEL = os.getenv("OPENAI_MODEL","gpt-6.2-sol")
 YT_TOKEN = os.getenv("YOUTUBE_TOKEN_JSON","")
 YT_KEY = os.getenv("YOUTUBE_API_KEY","")
 YT_PRIVACY = os.getenv("YOUTUBE_PRIVACY","private")
+YT_CATEGORY_ID = os.getenv("YOUTUBE_CATEGORY_ID","22")
 MAX_MB = int(os.getenv("MAX_TELEGRAM_DOWNLOAD_MB","19"))
 MAX_SECONDS = int(os.getenv("MAX_SHORT_SECONDS","180"))
 SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
@@ -80,7 +81,7 @@ def render(src,out,music):
     else:
         cmd += ["-vf","scale=720:1280:force_original_aspect_ratio=increase,crop=720:1280,setsar=1",
           "-map","0:v:0","-map","0:a?"]
-    cmd += ["-t",str(MAX_SECONDS),"-c:v","libx264","-preset","veryfast","-crf","27",
+    cmd += ["-t",str(MAX_SECONDS),"-shortest","-c:v","libx264","-preset","veryfast","-crf","27",
             "-c:a","aac","-b:a","128k","-movflags","+faststart",str(out)]
     subprocess.run(cmd,check=True,capture_output=True,text=True,timeout=900)
 
@@ -90,7 +91,7 @@ def yt_upload(path,title,desc,tags):
     if creds.expired and creds.refresh_token: creds.refresh(Request())
     if not creds.valid: raise RuntimeError("YouTube OAuth token invalid; re-authorize.")
     yt=build("youtube","v3",credentials=creds,cache_discovery=False)
-    body={"snippet":{"title":title[:100],"description":desc[:5000],"tags":tags[:500],"categoryId":"10"},
+    body={"snippet":{"title":title[:100],"description":desc[:5000],"tags":tags[:500],"categoryId":YT_CATEGORY_ID},
           "status":{"privacyStatus":YT_PRIVACY,"selfDeclaredMadeForKids":False}}
     media=MediaFileUpload(path,chunksize=8*1024*1024,resumable=True,mimetype="video/mp4")
     req=yt.videos().insert(part="snippet,status",body=body,media_body=media)
