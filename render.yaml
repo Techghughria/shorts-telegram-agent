@@ -16,6 +16,10 @@ services:
         sync: false
       - key: OPENAI_API_KEY
         sync: false
+      - key: OPENAI_MODEL
+        value: gpt-6.1-sol
+      - key: YOUTUBE_CATEGORY_ID
+        value: '22'
       - key: YOUTUBE_TOKEN_JSON
         sync: false
       - key: YOUTUBE_API_KEY
